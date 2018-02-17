@@ -4,8 +4,9 @@ SW.methods.printStorageItems = function() {
   })
 };
 
-SW.methods.saveObject = function(object, callback, objectKey) {
+SW.methods.saveObject = function(object, callback, objectKey) { // add in bounty?
   var storageObject = {};
+  var storageBountyID = {};
 
   // By default questionId is used for creating objectKey
   if (!objectKey) {
@@ -14,6 +15,8 @@ SW.methods.saveObject = function(object, callback, objectKey) {
 
   // Will be used at the time of deleting/updating this object
   object['objectKey'] = objectKey;
+
+  // Used to locally save bounties to IDs
 
   storageObject[objectKey] = object;
 
