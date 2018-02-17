@@ -1,5 +1,5 @@
 var $watchIcon = null,
-  $notificationDiv = $('<div></div>').attr({id: 'se_notifier', title: 'Click to close'});
+  $notificationDiv = $('<div></div>').attr({id: 'se_notifier', title: 'Click to confirm'});
 
 function sendMessageToBackground(message, callback) {
   chrome.runtime.sendMessage(message, callback);
@@ -27,9 +27,9 @@ function createWatchIcon() {
       updateWatchIcon(action == 'watchPage');
 
       if (action == 'watchPage') {
-        notificationText = 'Question has been added to your watch list';
+        notificationText = 'CLICK HERE to confirm';
       } else {
-        notificationText = 'Question has been removed from watch list';
+        notificationText = 'Will do nothing eventually';
       }
 
       showNotification({type: 'se_notice', message: notificationText});
@@ -37,9 +37,10 @@ function createWatchIcon() {
       sendMessageToBackground({ action: action, url: url }, function(){ } );
    });
 
-  $notificationDiv.click(function() {
-    $(this).hide();
-  });
+  // $notificationDiv.click(function() {
+  //   $(this).hide();
+  //   //put function here from .sol
+  // });
 
   $target = $('#question').find('div.vote').first();
   $target.append($watchIcon);
@@ -53,9 +54,9 @@ function updateWatchIcon(watchStatus) {
   if (!$watchIcon) {
     createWatchIcon();
   } else {
-    setTimeout(function() {
-      $notificationDiv.fadeOut(1000);
-    }, 3000);
+    // setTimeout(function() {
+    //   $notificationDiv.fadeOut(5000);
+    // }, 3000);
   }
 
   if (watchStatus) {
@@ -70,9 +71,17 @@ function updateWatchIcon(watchStatus) {
 }
 
 function showNotification(notification) {
+  var $form= $('<input/>').attr({ type: 'form', name:'btn1', value:'am button'});
+  var $button= $('<input/>').attr({ type: 'button', name:'btn1', value:'am button'});
+
+
   $notificationDiv.text(notification.message)
     .removeClass('se_notice se_error se_success').addClass(notification.type)
     .fadeIn(1000);
+  $notificationDiv.append($something1);
+
+  $notificationDiv.append($something);
+
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
