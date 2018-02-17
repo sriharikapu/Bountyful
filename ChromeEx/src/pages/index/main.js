@@ -31,7 +31,6 @@ $(function() {
       '<img src="https://www.google.com/s2/favicons?domain=' + questionObject.domain + '"/>' +
       '<a class="link" target="_blank" href="' + questionObject.link + '">' + questionObject.title + '</a>' +
     '</div>';
-
     return markup;
   };
 
