@@ -10,6 +10,17 @@ $(function() {
   Popup.vars.notifications = BG.SW.stores.notificationStore;
   Popup.vars.userNotifications = BG.SW.stores.userNotificationStore;
   Popup.vars.$viewNotificationsButton = $("#swo_view_notifications");
+  Popup.vars.questions = BG.SW.stores.questionFeedStore;
+  Popup.vars.$questionList = $('#question-area').find('.se-list');
+
+  Popup.methods.getQuestionMarkup = function(questionObject) {
+    var markup = '<div class="lower-row">' +
+      '<img src="https://www.google.com/s2/favicons?domain=' + questionObject.domain + '"/>' +
+      '<a class="link" target="_blank" href="' + questionObject.link + '">' + questionObject.title + '</a>' +
+    '</div>';
+
+    return markup;
+  };
 
   Popup.methods.updateCurrentPage = function() {
     Shared.methods.renderItems(
@@ -24,6 +35,14 @@ $(function() {
       Shared.methods.getUserNotificationMarkup,
       Shared.DEFAULT_TEMPLATES.USER_NOTIFICATION);
 
+    // added, this is the template showing the questions
+    Shared.methods.renderItems(
+      Popup.vars.questions,
+      Popup.vars.$questionList,
+      Popup.methods.getQuestionMarkup,
+      Shared.DEFAULT_TEMPLATES.QUESTION
+    );
+
     // Show the number along side with tab names like Questions[3] and Users[5]
     $('.tabContainer').find('a').each(function(index, tab) {
       var area = tab.getAttribute('data-targetId'),
@@ -34,12 +53,12 @@ $(function() {
           numItems = BG.SW.stores.notificationStore.length;
           break;
 
-        case 'user-notification-area':
+        case 'user-notification-area': 
           numItems = BG.SW.stores.userNotificationStore.length;
           break;
 
-        case 'question-area':
-          numItems = BG.SW.stores.questionFeedStore.length;
+        case 'question-area': //question notification area
+          numItems = BG.SW.stores.questionFeedStore.length; // replaced this with the var i set
           break;
 
         case 'users-area':
