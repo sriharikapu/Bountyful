@@ -91,8 +91,7 @@ $(function() {
       $listItem = $(this).parents('li'),
       objectKey = $listItem.attr('data-objectKey'),
       objectType = $listItem.attr('data-objectType');
-
-
+      
     Popup.methods.createNewTab({ active: true, url: href });
     return false;
   };
