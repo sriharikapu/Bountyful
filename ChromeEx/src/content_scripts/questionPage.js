@@ -1,5 +1,15 @@
 var $watchIcon = null,
-  $notificationDiv = $('<div></div>').attr({id: 'se_notifier', title: 'Click to confirm'});
+  $notificationDiv = $('<div></div>').attr({id: 'se_notifier', title: 'Click to confirm'})
+  $modal = $('<!-- Trigger/Open The Modal --> \
+    <button id="myBtn">Open Modal</button> \
+    <!-- The Modal --> \ 
+    <div id="myModal" class="modal"> \
+    <!-- Modal content --> \
+    <div class="modal-content"> \
+    <span class="close">&times;</span> \
+    <p>Some text in the Modal..</p> \
+  </div> \
+</div>');
 
 function sendMessageToBackground(message, callback) {
   chrome.runtime.sendMessage(message, callback);
