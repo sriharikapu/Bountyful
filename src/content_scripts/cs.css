@@ -1,0 +1,54 @@
+#watchIcon {
+  cursor: pointer;
+  height: 32px;
+}
+
+#watchIcon:hover {
+  opacity: 0.7;
+}
+
+#se_notifier {
+  position: fixed;
+  top: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 17px;
+  font-weight: bolder;
+  color: black;
+  display: none;
+  z-index: 10000;
+  text-align: center;
+}
+
+#se_notifier.se_error {
+  background: lightcoral;
+}
+
+#se_notifier.se_notice {
+  background: orange;
+}
+
+#se_follow_button {
+  margin-left: 1rem;
+  border-radius: 2px;
+  cursor: pointer;
+  color: #fff;
+  border: 0;
+  font-size: 0.8rem;
+  position: relative;
+  padding: 0.3rem 1rem;
+}
+
+.se_follow {
+  background-color: rgb(0, 120, 231);
+}
+
+.se_following {
+  background-color: rgb(28, 184, 65);
+}
+
+.user-card-name #se_follow_button {
+  top: -0.4rem;
+}
