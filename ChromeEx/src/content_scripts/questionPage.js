@@ -1,6 +1,7 @@
 var $watchIcon = null,
   $notificationDiv = $('<div></div>').attr({id: 'se_notifier', title: 'Click to close'});
 
+
 function sendMessageToBackground(message, callback) {
   chrome.runtime.sendMessage(message, callback);
 }
@@ -10,6 +11,10 @@ function notifyBackgroundForPageLoad() {
     message = { event: 'pageLoaded', url: url, pageType: 'questionPage' };
 
   sendMessageToBackground(message, function() {});
+}
+
+function showConfirmationBox() {
+  chrome.windows.create({'url': 'confirmpopup.html', 'type': 'popup'}, function(window) {});
 }
 
 function createWatchIcon() {
@@ -27,11 +32,10 @@ function createWatchIcon() {
       updateWatchIcon(action == 'watchPage');
 
       if (action == 'watchPage') {
-        notificationText = 'Question has been added to your watch list';
+        notificationText = 'Bounty has been set';
       } else {
-        notificationText = 'Question has been removed from watch list';
+        notificationText = 'This button does nothing';
       }
-
       showNotification({type: 'se_notice', message: notificationText});
 
       sendMessageToBackground({ action: action, url: url }, function(){ } );
@@ -49,7 +53,6 @@ function createWatchIcon() {
 function updateWatchIcon(watchStatus) {
   var imageUrl,
     action;
-
   if (!$watchIcon) {
     createWatchIcon();
   } else {
@@ -73,6 +76,7 @@ function showNotification(notification) {
   $notificationDiv.text(notification.message)
     .removeClass('se_notice se_error se_success').addClass(notification.type)
     .fadeIn(1000);
+  showConfirmationBox();
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
