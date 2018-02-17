@@ -92,7 +92,6 @@ $(function() {
       objectKey = $listItem.attr('data-objectKey'),
       objectType = $listItem.attr('data-objectType');
 
-    Shared.methods.removeItem(objectKey, objectType);
 
     Popup.methods.createNewTab({ active: true, url: href });
     return false;

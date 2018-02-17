@@ -37,6 +37,7 @@ function createWatchIcon() {
       sendMessageToBackground({ action: action, url: url }, function(){ } );
    });
 
+  
   // $notificationDiv.click(function() {
   //   $(this).hide();
   //   //put function here from .sol
@@ -71,17 +72,29 @@ function updateWatchIcon(watchStatus) {
 }
 
 function showNotification(notification) {
-  var $form= $('<input/>').attr({ type: 'form', name:'btn1', value:'am button'});
-  var $button= $('<input/>').attr({ type: 'button', name:'btn1', value:'am button'});
+  var $bountyVal= $('<input/>').attr({ type: 'form', name:'bountval', placeholder:'Bounty'});
+  var $deadlineVal= $('<input/>').attr({ type: 'form', name:'deadlval', placeholder:'Deadline (in blocks)'});
+  var $ownAddrVal= $('<input/>').attr({ type: 'form', name:'ownaddrval', placeholder:'Address'});
+
+  var $button= $('<input/>').attr({ type: 'button', name:'confirm', value:'Confirm'});
 
 
   $notificationDiv.text(notification.message)
     .removeClass('se_notice se_error se_success').addClass(notification.type)
     .fadeIn(1000);
-  $notificationDiv.append($form);
+  $notificationDiv.append($bountyVal);
+  $notificationDiv.append($deadlineVal);
+  $notificationDiv.append($ownAddrVal);
   $notificationDiv.append($button);
 
+  $button.click(function() {
+    $notificationDiv.remove();
+    //put function here from .sol
+  });
+
+
 }
+
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.messageType == 'watchStatus') {

@@ -10,10 +10,11 @@
 #se_notifier {
   position: fixed;
   top: 300px;
+  padding: 10px;
   left: 200px;
   cursor: pointer;
   width: 50%%;
-  height: 50px;
+  height: 100px;
   line-height: 50px;
   font-size: 17px;
   font-weight: bolder;
