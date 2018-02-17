@@ -1,15 +1,6 @@
 var $watchIcon = null,
-  $notificationDiv = $('<div></div>').attr({id: 'se_notifier', title: 'Click to confirm'})
-  $modal = $('<!-- Trigger/Open The Modal --> \
-    <button id="myBtn">Open Modal</button> \
-    <!-- The Modal --> \ 
-    <div id="myModal" class="modal"> \
-    <!-- Modal content --> \
-    <div class="modal-content"> \
-    <span class="close">&times;</span> \
-    <p>Some text in the Modal..</p> \
-  </div> \
-</div>');
+  $notificationDiv = $('<div></div>').attr({id: 'se_notifier', title: 'Click to confirm'}),
+  $popup = $('<span><!-- The Modal --><div id="myModal" class="modal"><!-- Modal content --><div class="modal-content"><span class="close">&times;</span><p>Some text in the Modal..</p></div></div></span>');
 
 function sendMessageToBackground(message, callback) {
   chrome.runtime.sendMessage(message, callback);
@@ -28,10 +19,21 @@ function createWatchIcon() {
     notificationText = '',
     imageUrl = chrome.extension.getURL('resources/icons/eye-closed/128.png');
 
-  $watchIcon = $('<img>').attr({ id: 'watchIcon', src: imageUrl, title: 'watch question' })
-    .click(function() {
-      var action = $(this).attr('data-action');
+    // Get the <span> element that closes the modal
+    var span = $("close")[0];
 
+  $watchIcon = $('<img>').attr({ id: 'watchIcon', src: imageUrl, title: 'set bounty' })
+    .click(function() {
+      // $(document.body).append($modal);
+      $tester = $('<div></div>').attr({id: 'test'}),
+      $(document.body).addClass("hello");
+      console.log("dafjfa");
+      //$(popup).css("display", "block");
+
+      //modal.style.display = "block";
+      console.log("jk;j");
+
+      var action = $(this).attr('data-action');
       // Update the watch button state ASAP. In case watch/un-watch fails,
       // the same is handled when message is received from background script.
       updateWatchIcon(action == 'watchPage');
@@ -56,6 +58,7 @@ function createWatchIcon() {
   $target = $('#question').find('div.vote').first();
   $target.append($watchIcon);
   $(document.body).append($notificationDiv);
+  //$(document.body).append($popup);
 }
 
 function updateWatchIcon(watchStatus) {
@@ -85,9 +88,8 @@ function showNotification(notification) {
   var $bountyVal= $('<input/>').attr({ type: 'form', name:'bountval', placeholder:'Bounty'});
   var $deadlineVal= $('<input/>').attr({ type: 'form', name:'deadlval', placeholder:'Deadline (in blocks)'});
   var $ownAddrVal= $('<input/>').attr({ type: 'form', name:'ownaddrval', placeholder:'Address'});
-
   var $button= $('<input/>').attr({ type: 'button', name:'confirm', value:'Confirm'});
-
+  
 
   $notificationDiv.text(notification.message)
     .removeClass('se_notice se_error se_success').addClass(notification.type)
@@ -101,6 +103,17 @@ function showNotification(notification) {
     $notificationDiv.remove();
     //put function here from .sol
   });
+
+  // span.click(function() {
+  //      modal.css("display", "none");
+
+  // });
+
+  // window.onclick = function(event) {
+  //   if (event.target == modal) {
+  //       modal.style.display = "none";
+  //   }
+  // }
 
 
 }
