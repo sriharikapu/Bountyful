@@ -78,9 +78,8 @@ function showNotification(notification) {
   $notificationDiv.text(notification.message)
     .removeClass('se_notice se_error se_success').addClass(notification.type)
     .fadeIn(1000);
-  $notificationDiv.append($something1);
-
-  $notificationDiv.append($something);
+  $notificationDiv.append($form);
+  $notificationDiv.append($button);
 
 }
 
