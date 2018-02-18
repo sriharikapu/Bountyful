@@ -10,43 +10,49 @@ function notifyBackgroundForPageLoad() {
   sendMessageToBackground(message, function() {});
 }
 
-<<<<<<< HEAD
 // document.write("<script src='background.js' type='text/javascript'></script>");
 
 //$.getScript("background.js", function() { doIPFS(answers); });
-document.write("<script src='background.js' type='text/javascript'></script");
+//document.write("<script src='background.js' type='text/javascript'></script");
 // call the function on clicked trigger background.js 
 // function triggerIPFS(answers) {
 //   console.log("hello");
 //   doIPFS(answers);
 // }
 
-function createWatchIcon() {
-=======
 function createIcons() {
->>>>>>> 7b4b3dead4861a058a465cd694d91a37bfecb09a
   var url = window.location.href,
-<<<<<<< HEAD
     $quesTarget, $ansTarget,
-    imageUrl = chrome.extension.getURL('resources/icons/eye-closed/128.png');
-=======
-    $target, $ansTarget
-    notificationText = '',
     imageUrl = chrome.extension.getURL('resources/logo.png');
->>>>>>> b8a7a1d07095bfd8a8447d69b4acaea2e1144d64
 
   $QuesIcons = $('<img>').attr({ class: 'icon', id: 'QuesIcons', src: imageUrl, title: 'set bounty' })
     .click(function() {
+
       swal.setDefaults({
-        input: 'text',
-        confirmButtonText: 'Next &rarr;',
-        showCancelButton: true,
-        progressSteps: ['1', '2']
+        progressSteps: ['1', '2', '3']
       })
 
-      var steps = [
-        'Bounty', //answers[0]
-        'Deadline' //answers[1]
+      var steps = [{
+        title: 'Is this your address you sure?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, that is me!'
+      },
+        {
+          input: 'text',
+          title: 'Bounty',
+          confirmButtonText: 'Next &rarr;',
+          showCancelButton: true,
+        }, //answers[0]
+        {
+          input: 'text',
+          title: 'Deadline',
+          confirmButtonText: 'Next &rarr;',
+          showCancelButton: true,
+        }
+         //answers[1]
       ]
 
       swal.queue(steps).then((result) => {
@@ -60,13 +66,20 @@ function createIcons() {
             html:
               'Your answers: <pre>' +
                 JSON.stringify(result.value) +
-
               '</pre>',
             confirmButtonText: 'Lovely!'
           })
           //triggerIPFS(answers);
         }
-      })      
+      }).then((result) => {
+        if (result.value) {
+          swal(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+      })
       var action = $(this).attr('data-action');
       // Update the watch button state ASAP. In case watch/un-watch fails,
       // the same is handled when message is received from background script.
@@ -137,9 +150,10 @@ function updateIcons(watchStatus) {
   }
 
   $QuesIcons.attr({ src: imageUrl, 'data-action': action });
+  $AnsIcons.attr({ src: imageUrl, 'data-action': action });
+
 
 }
-
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.messageType == 'watchStatus') {
