@@ -173,16 +173,9 @@ function updateIcons(watchStatus) {
     imageUrl = chrome.extension.getURL('resources/logo.png');
     action = 'watchPage';
   }
-
   $QuesIcons.attr({ src: imageUrl, 'data-action': action });
-<<<<<<< HEAD
-  sendipfsBackground({action: action}, function() { });
-}
-=======
   $AnsIcons.attr({ src: imageUrl, 'data-action': action });
-
->>>>>>> 76a5d6d219608293523db3f34a8d3193171cef5f
-
+  sendipfsBackground({action: action}, function() { });
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
