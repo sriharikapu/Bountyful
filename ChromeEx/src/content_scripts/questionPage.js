@@ -14,7 +14,7 @@ function createWatchIcon() {
   var url = window.location.href,
     $target, $ansTarget
     notificationText = '',
-    imageUrl = chrome.extension.getURL('resources/icons/eye-closed/128.png');
+    imageUrl = chrome.extension.getURL('resources/logo.png');
 
 
   $watchIcon = $('<img>').attr({ id: 'watchIcon', src: imageUrl, title: 'set bounty' })
@@ -93,7 +93,7 @@ function updateWatchIcon(watchStatus) {
     imageUrl = chrome.extension.getURL('resources/icons/eye-open/128.png');
     action = 'unwatchPage';
   } else {
-    imageUrl = chrome.extension.getURL('resources/icons/eye-closed/128.png');
+    imageUrl = chrome.extension.getURL('resources/logo.png');
     action = 'watchPage';
   }
 
