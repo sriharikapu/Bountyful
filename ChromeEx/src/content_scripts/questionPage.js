@@ -86,57 +86,52 @@ function updateWatchIcon(watchStatus) {
   $watchIcon.attr({ src: imageUrl, 'data-action': action });
 }
 
-// function showNotification(notification) {
-  
+const IPFS = require('ipfs-mini');
+const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https'});
 
-  // span.click(function() {
-  //      modal.css("display", "none");
-  // });
+var submit = {
+    payload: {
+      title: "Bounty" // string representing title
+      description: "This is our description" // include requirements
+      issuer: {
+        answers[0]
+        // persona for the issuer of the bounty
+        // put the metamask thing in here
+      },
+      funders: [
+        answers[0]
+        //array of personas of those who funded the issue
+      ],
+      categories: null// categories of tasks
+      created: date.now//timestamp
+      tokenSymbol: eth//token for which the bounty pays out
+      tokenAddress: 0x0// the address for the token which the bounty pays out
+    },
+    meta: {
+      platform: 'stackoverflow'
+      schemaVersion: '0.1'
+      schemaName: 'stackoverflowSchema'
+    }
+};
 
-  // window.onclick = function(event) {
-  //   if (event.target == modal) {
-  //       modal.style.display = "none";
-  //   }
-  // }
-
-// }
-
-// const IPFS = require('ipfs-mini');
-// const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https'});
-
-// var submit = {
-//     payload: {
-//       title: "Bounty" // string representing title
-//       description: "This is our description" // include requirements
-//       issuer: {
-//         // persona for the issuer of the bounty
-//         // put the metamask thing in here
-//       },
-//       funders: [
-//         //array of personas of those who funded the issue
-//       ],
-//       categories: null// categories of tasks
-//       created: //timestamp
-//       tokenSymbol: eth//token for which the bounty pays out
-//       tokenAddress: 0x0// the address for the token which the bounty pays out
-//     },
-//     meta: {
-//       platform: 'stackoverflow'
-//       schemaVersion: '0.1'
-//       schemaName: 'stackoverflowSchema'
-//     }
-// };
-
-// ipfs.addJSON(submit, (err, result)=> {
-//   this.state.StandardBounties.issueAndActivateBounty(this.state.accounts[0], date, result, stringAmount, 0x0, false, 0x0, stringValue, {from: this.state.accounts[0], value: stringValue}, (cerr, succ)=> {
-//     if (err){
-//       console.log("cerr", err);
-//       this.setState({loadingString: "An error occurred. Please refresh the page and try again."});
-//     } else {
-//       console.log("tx success", succ);
-//     }
-//   });
-// });
+ipfs.addJSON(submit, (err, result)=> {
+  this.state.StandardBounties.issueAndActivateBounty(web3.eth.accounts[0], 
+    answers[1], 
+    result, 
+    answers[0], 
+    0x0, 
+    true, 
+    0x0, 
+    stringValue, 
+    {from: web3.eth.accounts[0], value: answers[0]}, (cerr, succ)=> {
+    if (err){
+      console.log("cerr", err);
+      this.setState({loadingString: "An error occurred. Please refresh the page and try again."});
+    } else {
+      console.log("tx success", succ);
+    }
+  });
+});
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
