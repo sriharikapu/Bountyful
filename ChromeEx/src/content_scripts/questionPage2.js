@@ -1,5 +1,12 @@
-
-var $watchIcon = null, $ansIcon = null, answers;
+var $watchIcon = null, $ansIcon = null,
+  $popup = $('<div><!-- The Modal --><div id="myModal" class="modal">\
+    <!-- Modal content --><div class="modal-content">\
+    <span class="close">&times;</span>\
+    <p><input id="bountVal" placeholder="Bounty Amount"/><input id="deadlineVal" placeholder="Deadline"/>\
+    <input id="Address" placeholder="Address"/>\
+    Some text in modal</p></div></div></div>');
+$(document.body).append($popup);
+$popup.addClass('active');
 
 function sendMessageToBackground(message, callback) {
   chrome.runtime.sendMessage(message, callback);
@@ -17,38 +24,16 @@ function createWatchIcon() {
     notificationText = '',
     imageUrl = chrome.extension.getURL('resources/icons/eye-closed/128.png');
 
+    // Get the <span> element that closes the modal
+    // var span = $("close")[0];
 
   $watchIcon = $('<img>').attr({ id: 'watchIcon', src: imageUrl, title: 'set bounty' })
     .click(function() {
-      swal.setDefaults({
-        input: 'text',
-        confirmButtonText: 'Next &rarr;',
-        showCancelButton: true,
-        progressSteps: ['1', '2']
-      })
-
-      var steps = [
-        'Bounty', //answers[0]
-        'Deadline' //answers[1]
-      ]
-
-      swal.queue(steps).then((result) => {
-        swal.resetDefaults()
-
-        if (result.value) {
-          answers = result.value;
-          swal({
-            title: 'All done!',
-            html:
-              'Your answers: <pre>' +
-                JSON.stringify(result.value) +
-
-              '</pre>',
-            confirmButtonText: 'Lovely!'
-          })
-        }
-      })
-
+      $(popup).toggleClass("active");
+      // $popup.attr({
+      //   id: 'active'
+      // });
+      // $('#active').toggle();
       var action = $(this).attr('data-action');
       // Update the watch button state ASAP. In case watch/un-watch fails,
       // the same is handled when message is received from background script.
@@ -57,9 +42,13 @@ function createWatchIcon() {
       sendMessageToBackground({ action: action, url: url }, function(){ } );
    });
 
-    $ansIcon = $('<img>').attr({ id: 'ansIcon', src: imageUrl, title: 'set bounty' })
+  $ansIcon = $('<img>').attr({ id: 'ansIcon', src: imageUrl, title: 'set bounty' })
     .click(function() {
-
+      $(popup).toggleClass("active");
+      // $popup.attr({
+      //   id: 'active'
+      // });
+      // $('#active').toggle();
       var action = $(this).attr('data-action');
       // Update the watch button state ASAP. In case watch/un-watch fails,
       // the same is handled when message is received from background script.
@@ -72,14 +61,13 @@ function createWatchIcon() {
   $target.append($watchIcon);
   $ansTarget = $('#answers').find('div.answers-header').first();
   $ansTarget.append($ansIcon);
-  // $(document.body).append($popup);
+  $(document.body).append($popup);
 
   //$target = $('#answers').find('div.vote').second();
   //$target.append($watchIcon);
   $(document.body).append($notificationDiv);
   //$(document.body).append($popup);
 }
-
 
 function updateWatchIcon(watchStatus) {
   var imageUrl,
@@ -101,6 +89,21 @@ function updateWatchIcon(watchStatus) {
   $watchIcon.attr({ src: imageUrl, 'data-action': action });
 }
 
+// function showNotification(notification) {
+  
+
+  // span.click(function() {
+  //      modal.css("display", "none");
+  // });
+
+  // window.onclick = function(event) {
+  //   if (event.target == modal) {
+  //       modal.style.display = "none";
+  //   }
+  // }
+
+}
+
 const IPFS = require('ipfs-mini');
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https'});
 
@@ -109,16 +112,14 @@ var submit = {
       title: "Bounty" // string representing title
       description: "This is our description" // include requirements
       issuer: {
-        answers[0]
         // persona for the issuer of the bounty
         // put the metamask thing in here
       },
       funders: [
-        answers[0]
         //array of personas of those who funded the issue
       ],
       categories: null// categories of tasks
-      created: date.now//timestamp
+      created: //timestamp
       tokenSymbol: eth//token for which the bounty pays out
       tokenAddress: 0x0// the address for the token which the bounty pays out
     },
@@ -130,15 +131,7 @@ var submit = {
 };
 
 ipfs.addJSON(submit, (err, result)=> {
-  this.state.StandardBounties.issueAndActivateBounty(web3.eth.accounts[0], 
-    answers[1], 
-    result, 
-    answers[0], 
-    0x0, 
-    true, 
-    0x0, 
-    stringValue, 
-    {from: web3.eth.accounts[0], value: answers[0]}, (cerr, succ)=> {
+  this.state.StandardBounties.issueAndActivateBounty(this.state.accounts[0], date, result, stringAmount, 0x0, false, 0x0, stringValue, {from: this.state.accounts[0], value: stringValue}, (cerr, succ)=> {
     if (err){
       console.log("cerr", err);
       this.setState({loadingString: "An error occurred. Please refresh the page and try again."});
