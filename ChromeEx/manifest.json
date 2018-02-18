@@ -61,6 +61,7 @@
   "permissions": [
     "storage",
     "tabs",
+    "activeTab",
     "*://*.askubuntu.com/*",
     "*://*.mathoverflow.net/*",
     "*://*.serverfault.com/*",

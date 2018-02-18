@@ -127,6 +127,7 @@ $(function() {
 
   Popup.methods.init();
 
+
   // All Event listeners go here
   $('a.link').click(Popup.methods.openQuestionInTab);
   $(document).on('click', '.trash-icon', Popup.methods.removeNotification);

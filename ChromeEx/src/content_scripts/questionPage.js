@@ -155,6 +155,9 @@ function updateIcons(watchStatus) {
 
 }
 
+
+
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.messageType == 'watchStatus') {
     updateIcons(request.watchStatus);
