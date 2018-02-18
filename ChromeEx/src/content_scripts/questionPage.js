@@ -88,7 +88,6 @@ function createIcons() {
       sendMessageToBackground({ action: action, url: url }, function(){ } );
    });
 
-
   $AnsIcons = $('<img>').attr({ class: 'icon', id: 'AnsIcons', src: imageUrl, title: 'get bounty' })
     .click(function() {
       swal.setDefaults({
@@ -126,7 +125,6 @@ function createIcons() {
 
       sendMessageToBackground({ action: action, url: url }, function(){ } );
    });
-
   $quesTarget = $('#question').find('div.vote').first();
   $quesTarget.append($QuesIcons);
   $ansTarget = $('#answers').find('form.post-form').first();
