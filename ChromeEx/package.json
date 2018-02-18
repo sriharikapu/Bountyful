@@ -26,5 +26,9 @@
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-zipup": "~0.1.6"
+  },
+  "dependencies": {
+    "ipfs-js": "0.0.11",
+    "ipfs-mini": "^1.1.2"
   }
 }
