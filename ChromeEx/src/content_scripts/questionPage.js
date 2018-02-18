@@ -1,14 +1,8 @@
-var $watchIcon = null, $ansIcon = null,
-  $popup = $('<div><!-- The Modal --><div id="myModal" class="modal">\
-    <!-- Modal content --><div class="modal-content">\
-    <span class="close">&times;</span>\
-    <p><input id="bountVal" placeholder="Bounty Amount"/><input id="deadlineVal" placeholder="Deadline"/>\
-    <input id="Address" placeholder="Address"/>\
-    Some text in modal</p></div></div></div>');
-$(document.body).append($popup);
-$popup.attr({
-  class: 'active',
-});
+
+
+swal('hi');
+
+var $watchIcon = null, $ansIcon = null;
 
 function sendMessageToBackground(message, callback) {
   chrome.runtime.sendMessage(message, callback);
@@ -31,7 +25,7 @@ function createWatchIcon() {
 
   $watchIcon = $('<img>').attr({ id: 'watchIcon', src: imageUrl, title: 'set bounty' })
     .click(function() {
-      $(popup).toggleClass("active");
+      // $(popup).toggleClass("active");
       // $popup.attr({
       //   id: 'active'
       // });
@@ -46,7 +40,7 @@ function createWatchIcon() {
 
     $ansIcon = $('<img>').attr({ id: 'ansIcon', src: imageUrl, title: 'set bounty' })
     .click(function() {
-      $(popup).toggleClass("active");
+      // $(popup).toggleClass("active");
       // $popup.attr({
       //   id: 'active'
       // });
@@ -63,7 +57,7 @@ function createWatchIcon() {
   $target.append($watchIcon);
   $ansTarget = $('#answers').find('div.answers-header').first();
   $ansTarget.append($ansIcon);
-  $(document.body).append($popup);
+  // $(document.body).append($popup);
 
   //$target = $('#answers').find('div.vote').second();
   //$target.append($watchIcon);
