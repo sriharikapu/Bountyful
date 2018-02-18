@@ -10,6 +10,16 @@ function notifyBackgroundForPageLoad() {
   sendMessageToBackground(message, function() {});
 }
 
+// document.write("<script src='background.js' type='text/javascript'></script>");
+
+//$.getScript("background.js", function() { doIPFS(answers); });
+document.write("<script src='background.js' type='text/javascript'></script");
+// call the function on clicked trigger background.js 
+// function triggerIPFS(answers) {
+//   console.log("hello");
+//   doIPFS(answers);
+// }
+
 function createWatchIcon() {
   var url = window.location.href,
     $target, $ansTarget
@@ -46,7 +56,7 @@ function createWatchIcon() {
               '</pre>',
             confirmButtonText: 'Lovely!'
           })
-          triggerIPFS(answers);
+          //triggerIPFS(answers);
         }
       })
 
@@ -101,10 +111,6 @@ function updateWatchIcon(watchStatus) {
   $watchIcon.attr({ src: imageUrl, 'data-action': action });
 }
 
-// call the function on clicked trigger background.js 
-function triggerIPFS(answers) {
-
-}
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.messageType == 'watchStatus') {
