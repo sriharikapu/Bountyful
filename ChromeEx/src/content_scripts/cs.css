@@ -17,9 +17,9 @@
   display: block;
 }
 
-
-
-
+#myModal.active {
+  display: none;
+}
 #se_follow_button {
   margin-left: 1rem;
   border-radius: 2px;
