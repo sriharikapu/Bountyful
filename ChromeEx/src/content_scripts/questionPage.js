@@ -72,7 +72,7 @@ function createIcons() {
           //triggerIPFS(answers);
         }
       }).then((result) => {
-        if (result.value) {
+        if (result != undefined && result.value) {
           swal(
             'Deleted!',
             'Your file has been deleted.',
