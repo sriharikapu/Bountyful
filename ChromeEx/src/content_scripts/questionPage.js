@@ -1,14 +1,8 @@
-var $watchIcon = null, $ansIcon = null,
-  $popup = $('<div><!-- The Modal --><div id="myModal" class="modal">\
-    <!-- Modal content --><div class="modal-content">\
-    <span class="close">&times;</span>\
-    <p><input id="bountVal" placeholder="Bounty Amount"/><input id="deadlineVal" placeholder="Deadline"/>\
-    <input id="Address" placeholder="Address"/>\
-    Some text in modal</p></div></div></div>');
-$(document.body).append($popup);
-$popup.attr({
-  class: 'active',
-});
+
+
+swal('hi');
+
+var $watchIcon = null, $ansIcon = null;
 
 function sendMessageToBackground(message, callback) {
   chrome.runtime.sendMessage(message, callback);
