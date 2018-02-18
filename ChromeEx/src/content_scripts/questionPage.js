@@ -1,39 +1,52 @@
+// require background.js
 var $QuesIcons = null, $AnsIcons = null, answers;
 
 function sendMessageToBackground(message, callback) {
+  console.log("babyHenlo");
   chrome.runtime.sendMessage(message, callback);
 }
 
 function notifyBackgroundForPageLoad() {
+  console.log("HENLO");
   var url = window.location.href,
-    message = { event: 'pageLoaded', url: url, pageType: 'questionPage' };
+  message = { event: 'pageLoaded', url: url, pageType: 'questionPage' };
   sendMessageToBackground(message, function() {});
+  console.log("henlo after message sent?");
 }
 
-<<<<<<< HEAD
-// document.write("<script src='background.js' type='text/javascript'></script>");
+function sendipfsBackground(message, callback) {
+  console.log("baby potato");
+  chrome.runtime.sendMessage(message, callback);
+}
 
-//$.getScript("background.js", function() { doIPFS(answers); });
-document.write("<script src='background.js' type='text/javascript'></script");
+function notifyipfsBackground() {
+  console.log("potato");
+  var url = window.location.href,
+  message = {event: 'needSendTx', answers: answers};
+  console.log("Script loaded but not necesarily executed."); 
+  sendipfsBackground(message, function() {});
+  console.log("potato after message sent?");
+}
+
+// document.write("<script src='background.js' type='text/javascript'></script>");
+// function test() {
+//   $.getScript("background.js", function() { 
+//   console.log("Script loaded but not necesarily executed."); 
+//   doIPFS(answers); 
+// });
+// }
+
+//document.write("<script src='background.js' type='text/javascript'></script");
 // call the function on clicked trigger background.js 
 // function triggerIPFS(answers) {
 //   console.log("hello");
 //   doIPFS(answers);
 // }
 
-function createWatchIcon() {
-=======
 function createIcons() {
->>>>>>> 7b4b3dead4861a058a465cd694d91a37bfecb09a
   var url = window.location.href,
-<<<<<<< HEAD
     $quesTarget, $ansTarget,
-    imageUrl = chrome.extension.getURL('resources/icons/eye-closed/128.png');
-=======
-    $target, $ansTarget
-    notificationText = '',
     imageUrl = chrome.extension.getURL('resources/logo.png');
->>>>>>> b8a7a1d07095bfd8a8447d69b4acaea2e1144d64
 
   $QuesIcons = $('<img>').attr({ class: 'icon', id: 'QuesIcons', src: imageUrl, title: 'set bounty' })
     .click(function() {
@@ -112,6 +125,8 @@ function createIcons() {
       updateIcons(action == 'watchPage');
 
       sendMessageToBackground({ action: action, url: url }, function(){ } );
+      //sendipfsBackground({action: action}, function() { });
+
    });
 
   $quesTarget = $('#question').find('div.vote').first();
@@ -137,7 +152,7 @@ function updateIcons(watchStatus) {
   }
 
   $QuesIcons.attr({ src: imageUrl, 'data-action': action });
-
+  sendipfsBackground({action: action}, function() { });
 }
 
 
@@ -150,3 +165,4 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 $(document).ready(notifyBackgroundForPageLoad);
+$(document).ready(notifyipfsBackground);
