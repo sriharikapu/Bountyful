@@ -1,4 +1,4 @@
-var $QuesIcons = null, $AnsIcons = null, answers;
+var $QuesIcons = null, answers;
 
 function sendMessageToBackground(message, callback) {
   chrome.runtime.sendMessage(message, callback);
@@ -22,7 +22,7 @@ function notifyBackgroundForPageLoad() {
 
 function createIcons() {
   var url = window.location.href,
-    $quesTarget, $ansTarget,
+    $quesTarget,
     imageUrl = chrome.extension.getURL('resources/logo.png');
 
   $QuesIcons = $('<img>').attr({ class: 'icon', id: 'QuesIcons', src: imageUrl, title: 'set bounty' })
@@ -89,55 +89,15 @@ function createIcons() {
    });
 
 
-  $AnsIcons = $('<img>').attr({ class: 'icon', id: 'AnsIcons', src: imageUrl, title: 'get bounty' })
-    .click(function() {
-      swal.setDefaults({
-        input: 'text',
-        confirmButtonText: 'Next &rarr;',
-        showCancelButton: true,
-        progressSteps: ['1', '2']
-      })
-
-      var steps = [
-        'Ans1', //answers[0]
-        'Ans2' //answers[1]
-      ]
-
-      swal.queue(steps).then((result) => {
-        swal.resetDefaults()
-
-        if (result.value) {
-          answers = result.value;
-          swal({
-            title: 'All done!',
-            html:
-              'Your answers: <pre>' +
-                JSON.stringify(result.value) +
-
-              '</pre>',
-            confirmButtonText: 'Lovely!'
-          })
-        }
-      })      
-      var action = $(this).attr('data-action');
-      // Update the watch button state ASAP. In case watch/un-watch fails,
-      // the same is handled when message is received from background script.
-      updateIcons(action == 'watchPage');
-
-      sendMessageToBackground({ action: action, url: url }, function(){ } );
-   });
-
   $quesTarget = $('#question').find('div.vote').first();
   $quesTarget.append($QuesIcons);
-  $ansTarget = $('#answers').find('div.post-editor').first();
-  $ansTarget.append($AnsIcons);
 
 }
 
 function updateIcons(watchStatus) {
   var imageUrl,
     action;
-  if (!$QuesIcons && !$AnsIcons) {
+  if (!$QuesIcons) {
     createIcons();
   }
 
@@ -150,16 +110,8 @@ function updateIcons(watchStatus) {
   }
 
   $QuesIcons.attr({ src: imageUrl, 'data-action': action });
-  $AnsIcons.attr({ src: imageUrl, 'data-action': action });
-
 
 }
-
-chrome.tabs.executeScript({
-      code: '(' + function() {swal("hi");} + ')();' //argument here is a string but function.toString() returns function's code
-  }, (results) => {
-      console.log(results);
-  });
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
