@@ -50,16 +50,32 @@ function createIcons() {
 
   $QuesIcons = $('<img>').attr({ class: 'icon', id: 'QuesIcons', src: imageUrl, title: 'set bounty' })
     .click(function() {
+
       swal.setDefaults({
-        input: 'text',
-        confirmButtonText: 'Next &rarr;',
-        showCancelButton: true,
-        progressSteps: ['1', '2']
+        progressSteps: ['1', '2', '3']
       })
 
-      var steps = [
-        'Bounty', //answers[0]
-        'Deadline' //answers[1]
+      var steps = [{
+        title: 'Is this your address you sure?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, that is me!'
+      },
+        {
+          input: 'text',
+          title: 'Bounty',
+          confirmButtonText: 'Next &rarr;',
+          showCancelButton: true,
+        }, //answers[0]
+        {
+          input: 'text',
+          title: 'Deadline',
+          confirmButtonText: 'Next &rarr;',
+          showCancelButton: true,
+        }
+         //answers[1]
       ]
 
       swal.queue(steps).then((result) => {
@@ -73,13 +89,20 @@ function createIcons() {
             html:
               'Your answers: <pre>' +
                 JSON.stringify(result.value) +
-
               '</pre>',
             confirmButtonText: 'Lovely!'
           })
           //triggerIPFS(answers);
         }
-      })      
+      }).then((result) => {
+        if (result.value) {
+          swal(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+      })
       var action = $(this).attr('data-action');
       // Update the watch button state ASAP. In case watch/un-watch fails,
       // the same is handled when message is received from background script.
@@ -152,9 +175,15 @@ function updateIcons(watchStatus) {
   }
 
   $QuesIcons.attr({ src: imageUrl, 'data-action': action });
+<<<<<<< HEAD
   sendipfsBackground({action: action}, function() { });
 }
+=======
+  $AnsIcons.attr({ src: imageUrl, 'data-action': action });
 
+>>>>>>> 76a5d6d219608293523db3f34a8d3193171cef5f
+
+}
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.messageType == 'watchStatus') {
