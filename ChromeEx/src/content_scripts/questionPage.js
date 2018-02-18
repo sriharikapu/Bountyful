@@ -36,6 +36,7 @@ function createWatchIcon() {
 
         if (result.value) {
           answers = result.value;
+
           swal({
             title: 'All done!',
             html:
@@ -45,6 +46,7 @@ function createWatchIcon() {
               '</pre>',
             confirmButtonText: 'Lovely!'
           })
+          triggerIPFS(answers);
         }
       })
 
@@ -79,7 +81,6 @@ function createWatchIcon() {
   //$(document.body).append($popup);
 }
 
-
 function updateWatchIcon(watchStatus) {
   var imageUrl,
     action;
@@ -100,53 +101,10 @@ function updateWatchIcon(watchStatus) {
   $watchIcon.attr({ src: imageUrl, 'data-action': action });
 }
 
-// const IPFS = require('ipfs-mini');
-// const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https'});
-  
-// var submit = {
-//     payload: {
-//       title: "Bounty" // string representing title
-//       description: "This is our description" // include requirements
-//       issuer: {
-//         answers[0]
-//         // persona for the issuer of the bounty
-//         // put the metamask thing in here
-//       },
-//       funders: [
-//         answers[0]
-//         //array of personas of those who funded the issue
-//       ],
-//       categories: null// categories of tasks
-//       created: date.now//timestamp
-//       tokenSymbol: eth//token for which the bounty pays out
-//       tokenAddress: 0x0// the address for the token which the bounty pays out
-//     },
-//     meta: {
-//       platform: 'stackoverflow'
-//       schemaVersion: '0.1'
-//       schemaName: 'stackoverflowSchema'
-//     }
-// };
+// call the function on clicked trigger background.js 
+function triggerIPFS(answers) {
 
-// ipfs.addJSON(submit, (err, result)=> {
-//   this.state.StandardBounties.issueAndActivateBounty(web3.eth.accounts[0], 
-//     answers[1], 
-//     result, 
-//     answers[0], 
-//     0x0, 
-//     true, 
-//     0x0, 
-//     stringValue, 
-//     {from: web3.eth.accounts[0], value: answers[0]}, (cerr, succ)=> {
-//     if (err){
-//       console.log("cerr", err);
-//       this.setState({loadingString: "An error occurred. Please refresh the page and try again."});
-//     } else {
-//       console.log("tx success", succ);
-//     }
-//   });
-// });
-
+}
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.messageType == 'watchStatus') {
