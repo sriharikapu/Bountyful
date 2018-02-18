@@ -31,7 +31,7 @@ function createWatchIcon() {
 
   $watchIcon = $('<img>').attr({ id: 'watchIcon', src: imageUrl, title: 'set bounty' })
     .click(function() {
-      $(popup).toggleClass("active");
+      // $(popup).toggleClass("active");
       // $popup.attr({
       //   id: 'active'
       // });
@@ -46,7 +46,7 @@ function createWatchIcon() {
 
     $ansIcon = $('<img>').attr({ id: 'ansIcon', src: imageUrl, title: 'set bounty' })
     .click(function() {
-      $(popup).toggleClass("active");
+      // $(popup).toggleClass("active");
       // $popup.attr({
       //   id: 'active'
       // });
@@ -63,14 +63,13 @@ function createWatchIcon() {
   $target.append($watchIcon);
   $ansTarget = $('#answers').find('div.answers-header').first();
   $ansTarget.append($ansIcon);
-  $(document.body).append($popup);
+  // $(document.body).append($popup);
 
   //$target = $('#answers').find('div.vote').second();
   //$target.append($watchIcon);
   $(document.body).append($notificationDiv);
   //$(document.body).append($popup);
 }
-
 
 
 function updateWatchIcon(watchStatus) {
