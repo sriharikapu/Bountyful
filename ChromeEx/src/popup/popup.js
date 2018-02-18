@@ -10,6 +10,7 @@ $(function() {
   Popup.vars.notifications = BG.SW.stores.notificationStore;
   Popup.vars.userNotifications = BG.SW.stores.userNotificationStore;
   Popup.vars.$viewNotificationsButton = $("#swo_view_notifications");
+  Popup.vars.$briansButton = $("#briansbutton");
   Popup.vars.questions = BG.SW.stores.questionFeedStore;
   Popup.vars.$questionList = $('#question-area').find('.se-list');
 
@@ -113,6 +114,10 @@ $(function() {
     return false;
   };
 
+  Popup.methods.briansfunction = function(evt) {
+    return false;
+  };
+
   Popup.methods.updateTabContent = function() {
     var $this = $(this),
       $tabContainer = $this.parents('.tabContainer'),
@@ -132,5 +137,6 @@ $(function() {
   $('a.link').click(Popup.methods.openQuestionInTab);
   $(document).on('click', '.trash-icon', Popup.methods.removeNotification);
   Popup.vars.$viewNotificationsButton.click(Popup.methods.viewAllNotificationsInTab);
+  Popup.vars.$brainsButton.click(Popup.methods.briansfunction);
   $('.se-tab').click(Popup.methods.updateTabContent);
 });

@@ -1,4 +1,5 @@
 //const IPFS = require('ipfs-mini');
+
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https'});
 
 SW.methods.printStorageItems = function() {
@@ -207,7 +208,9 @@ SW.methods.sendFollowStatus = function(isUserFollowed, url) {
 };
 
 SW.methods.contentScriptCommunicator = function(request, sender, sendResponse) {
+  console.log("HENLO AM HERE TOO");
   if (request.event == 'pageLoaded' && request.pageType == 'questionPage') {
+    console.log("INFILTRATION");
     SW.methods.clearNotification(request.url);
     SW.methods.isPageBeingWatched(request.url, SW.methods.sendWatchStatus /* callback */);
   }
@@ -239,57 +242,70 @@ SW.methods.contentScriptCommunicator = function(request, sender, sendResponse) {
   }
 };
 
-function doIPFS(answers) {
-  console.log("Hello i am here pls");
+SW.methods.doIPFS = function(request, sender, sendResponse) {
+    console.log("Hello i am here pls");
+    var d = new Date();
+    if (request.event == 'needSendTx') {
+      console.log("I have made it in");
+      var submit = {
+      payload: {
+        title: "Bounty", // string representing title
+        description: "This is our description", // include requirements
+        issuer: "ThisIsIssuer", //web3.eth.accounts[0],
+          // persona for the issuer of the bounty
+          // put the metamask thing in here
 
-  // var submit = {
-  //     payload: {
-  //       title: "Bounty" // string representing title
-  //       description: "This is our description" // include requirements
-  //       issuer: {
-  //         web3.eth.accounts[0]
-  //         // persona for the issuer of the bounty
-  //         // put the metamask thing in here
-  //       },
-  //       funders: [
-  //         web3.eth.accounts[0]
-  //         //array of personas of those who funded the issue
-  //       ],
-  //       categories: null// categories of tasks
-  //       created: date.now//timestamp
-  //       tokenSymbol: eth//token for which the bounty pays out
-  //       tokenAddress: 0x0// the address for the token which the bounty pays out
-  //     },
-  //     meta: {
-  //       platform: 'stackoverflow'
-  //       schemaVersion: '0.1'
-  //       schemaName: 'stackoverflowSchema'
-  //     }
-  };
+        funders: [
+          "ThisIsAFunder"//web3.eth.accounts[0]
+          //array of personas of those who funded the issue
+        ],
+        categories: null, // categories of tasks
+        created: d.getTime(), //timestamp
+        tokenSymbol: "ethereum",//token for which the bounty pays out
+        tokenAddress: 0x0// the address for the token which the bounty pays out
+      },
+      meta: {
+        platform: 'stackoverflow',
+        schemaVersion: '0.1', 
+        schemaName: 'stackoverflowSchema'
+      }
+      }
+      ipfs.addJSON(submit, (err, result)=> {
+        if (err) {
+          console.log("eror");
+        } else {
+          console.log("made it into success");
+          console.log(result);
+          console.log("tx success");
+        }
+      //   // 0xe5c6bd7dc52b38dd0870224ad32063486a71f9f2
+      //   StandardBounties.issueAndActivateBounty(
+      //   "ThisIsMyIssuerAddress",//web3.eth.accounts[0], 
+      //   answers[1], 
+      //   result, 
+      //   answers[0], 
+      //   0x0, 
+      //   true, 
+      //   0x0, 
+      //   stringValue, 
+      //   {from: "web3.eth.accounts[0]", value: answers[0]}, (cerr, succ)=> {
+      //   //{from: web3.eth.accounts[0], value: answers[0]}, (cerr, succ)=> {
+      //   if (err){
+      //     console.log("cerr", err);
+      //     this.setState({loadingString: "An error occurred. Please refresh the page and try again."});
+      //   } else {
+      //     console.log("tx success", succ);
+      //   }
+      // });
+    });
+    };
+  // need answers
+  //doIPFS(answers)
 
-  // ipfs.addJSON(submit, (err, result)=> {
-  //   this.state.StandardBounties.issueAndActivateBounty(
-  //     web3.eth.accounts[0], 
-  //     answers[1], 
-  //     result, 
-  //     answers[0], 
-  //     0x0, 
-  //     true, 
-  //     0x0, 
-  //     stringValue, 
-  //     {from: web3.eth.accounts[0], value: answers[0]}, (cerr, succ)=> {
-  //     if (err){
-  //       console.log("cerr", err);
-  //       this.setState({loadingString: "An error occurred. Please refresh the page and try again."});
-  //     } else {
-  //       console.log("tx success", succ);
-  //     }
-  //   });
-  // });
-
-// }
+};
 
 SW.methods.init = function() {
+  console.log("HALLO I AM HERE"),
   // If data is migrated, then create stores from migrated data
   chrome.storage.local.get('isDataMigrated', function(o) {
     if (o.isDataMigrated) {
@@ -305,6 +321,9 @@ SW.methods.init = function() {
 
   // Add Listener for events from content scripts
   chrome.runtime.onMessage.addListener(SW.methods.contentScriptCommunicator);
+
+  //Adding listener for events from ipfs
+  chrome.runtime.onMessage.addListener(SW.methods.doIPFS);
 
   setInterval(SW.methods.fetchNewNotifications, SW.vars.FETCH_NOTIFICATION_INTERVAL);
   setInterval(SW.methods.fetchUserNotifications, SW.vars.USER_NOTIFICATION_FETCH_INTERVAL);
