@@ -10,16 +10,6 @@ function notifyBackgroundForPageLoad() {
   sendMessageToBackground(message, function() {});
 }
 
-// document.write("<script src='background.js' type='text/javascript'></script>");
-
-//$.getScript("background.js", function() { doIPFS(answers); });
-//document.write("<script src='background.js' type='text/javascript'></script");
-// call the function on clicked trigger background.js 
-// function triggerIPFS(answers) {
-//   console.log("hello");
-//   doIPFS(answers);
-// }
-
 function createIcons() {
   var url = window.location.href,
     $quesTarget, $ansTarget,
@@ -33,12 +23,14 @@ function createIcons() {
       })
 
       var steps = [{
-        title: 'Is this your address you sure?',
+        title: 'Is this your address?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, that is me!'
+        confirmButtonText: 'Yes, that is me!',
+        cancelButtonText: 'No, that\'s not me!'
+
       },
         {
           input: 'text',
@@ -98,8 +90,8 @@ function createIcons() {
       })
 
       var steps = [
-        'Ans1', //answers[0]
-        'Ans2' //answers[1]
+        'Bounty ID', //answers[0]
+        'Address to send to' //answers[1]
       ]
 
       swal.queue(steps).then((result) => {
