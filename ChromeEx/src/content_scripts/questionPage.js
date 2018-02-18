@@ -65,6 +65,10 @@ function createWatchIcon() {
   $ansTarget.append($ansIcon);
   $(document.body).append($popup);
 
+  //$target = $('#answers').find('div.vote').second();
+  //$target.append($watchIcon);
+  $(document.body).append($notificationDiv);
+  //$(document.body).append($popup);
 }
 
 
@@ -91,72 +95,55 @@ function updateWatchIcon(watchStatus) {
 
 // function showNotification(notification) {
   
-//   // span.click(function() {
-//   //      modal.css("display", "none");
-//   // });
 
-//   // window.onclick = function(event) {
-//   //   if (event.target == modal) {
-//   //       modal.style.display = "none";
-//   //   }
-//   // }
+  // span.click(function() {
+  //      modal.css("display", "none");
+  // });
 
+  // window.onclick = function(event) {
+  //   if (event.target == modal) {
+  //       modal.style.display = "none";
+  //   }
+  // }
 
-// }
+}
 
+const IPFS = require('ipfs-mini');
+const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https'});
 
-// // call issueandActivateBounty() -> requires that the bounty hasn't expired
-//     // fulfillBounty()
-//     //updateFulfillment
-//     //acceptFulfillment
-//     //increasePayout
-//     //transferIssuer
-//     //extendDeadline
-//     //killBounty
+var submit = {
+    payload: {
+      title: "Bounty" // string representing title
+      description: "This is our description" // include requirements
+      issuer: {
+        // persona for the issuer of the bounty
+        // put the metamask thing in here
+      },
+      funders: [
+        //array of personas of those who funded the issue
+      ],
+      categories: null// categories of tasks
+      created: //timestamp
+      tokenSymbol: eth//token for which the bounty pays out
+      tokenAddress: 0x0// the address for the token which the bounty pays out
+    },
+    meta: {
+      platform: 'stackoverflow'
+      schemaVersion: '0.1'
+      schemaName: 'stackoverflowSchema'
+    }
+};
 
-//   //extendDeadline()
-//   //contribute()
-//   //activateBounty()
-
-// web3 = new Web3('http://localhost:8545');
-
-// web3.setProvider("https://rinkeby.infura.io");
-
-// var contract = web3.eth.contract(json.interfaces.StandardBounties).at(0xf209d2b723b6417cbf04c07e733bee776105a073);
-// contract.issueandActivateBounty(
-//   ownAddrVal, //address_issuer = ownAddrVal, 
-//   deadlineVal, //uint _deadline,
-//   '', //string _data,
-//   bountyVal, //uint256 _fulfillmentAmount,
-//   0x0,
-//   bool true,
-//   address 0x0,
-//   bountyVal,
-// );
-
-// //Issuing a bounty
-//   // {
-//   //   payload: {
-//   //     title: Bounty // string representing title
-//   //     description:// include requirements
-//   //     issuer: {
-//   //       // persona for the issuer of the bounty
-//   //       // put the metamask thing in here
-//   //     },
-//   //     funders: [
-//   //       //array of personas of those who funded the issue
-//   //     ],
-//   //     categories: null// categories of tasks
-//   //     created: //timestamp
-//   //     tokenSymbol: eth//token for which the bounty pays out
-//   //     tokenAddress: 0x0// the address for the token which the bounty pays out
-//   //   },
-//   //   meta: {
-//   //     platform: 'stackoverflow'
-//   //     schemaVersion: '0.1'
-//   //     schemaName: 'stackoverflowSchema'
-//   //   }
-//   // }
+ipfs.addJSON(submit, (err, result)=> {
+  this.state.StandardBounties.issueAndActivateBounty(this.state.accounts[0], date, result, stringAmount, 0x0, false, 0x0, stringValue, {from: this.state.accounts[0], value: stringValue}, (cerr, succ)=> {
+    if (err){
+      console.log("cerr", err);
+      this.setState({loadingString: "An error occurred. Please refresh the page and try again."});
+    } else {
+      console.log("tx success", succ);
+    }
+  });
+});
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
