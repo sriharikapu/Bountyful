@@ -1,4 +1,4 @@
-var $watchIcon = null, $ansIcon = null, answers;
+var $QuesIcons = null, $AnsIcons = null, answers;
 
 function sendMessageToBackground(message, callback) {
   chrome.runtime.sendMessage(message, callback);
@@ -10,14 +10,12 @@ function notifyBackgroundForPageLoad() {
   sendMessageToBackground(message, function() {});
 }
 
-function createWatchIcon() {
+function createIcons() {
   var url = window.location.href,
-    $target, $ansTarget
-    notificationText = '',
+    $quesTarget, $ansTarget,
     imageUrl = chrome.extension.getURL('resources/icons/eye-closed/128.png');
 
-
-  $watchIcon = $('<img>').attr({ id: 'watchIcon', src: imageUrl, title: 'set bounty' })
+  $QuesIcons = $('<img>').attr({ class: 'icon', id: 'QuesIcons', src: imageUrl, title: 'set bounty' })
     .click(function() {
       swal.setDefaults({
         input: 'text',
@@ -46,47 +44,66 @@ function createWatchIcon() {
             confirmButtonText: 'Lovely!'
           })
         }
+      })      
+      var action = $(this).attr('data-action');
+      // Update the watch button state ASAP. In case watch/un-watch fails,
+      // the same is handled when message is received from background script.
+      updateIcons(action == 'watchPage');
+
+      sendMessageToBackground({ action: action, url: url }, function(){ } );
+   });
+
+
+  $AnsIcons = $('<img>').attr({ class: 'icon', id: 'AnsIcons', src: imageUrl, title: 'get bounty' })
+    .click(function() {
+      swal.setDefaults({
+        input: 'text',
+        confirmButtonText: 'Next &rarr;',
+        showCancelButton: true,
+        progressSteps: ['1', '2']
       })
 
+      var steps = [
+        'Ans1', //answers[0]
+        'Ans2' //answers[1]
+      ]
+
+      swal.queue(steps).then((result) => {
+        swal.resetDefaults()
+
+        if (result.value) {
+          answers = result.value;
+          swal({
+            title: 'All done!',
+            html:
+              'Your answers: <pre>' +
+                JSON.stringify(result.value) +
+
+              '</pre>',
+            confirmButtonText: 'Lovely!'
+          })
+        }
+      })      
       var action = $(this).attr('data-action');
       // Update the watch button state ASAP. In case watch/un-watch fails,
       // the same is handled when message is received from background script.
-      updateWatchIcon(action == 'watchPage');
+      updateIcons(action == 'watchPage');
 
       sendMessageToBackground({ action: action, url: url }, function(){ } );
    });
 
-    $ansIcon = $('<img>').attr({ id: 'ansIcon', src: imageUrl, title: 'set bounty' })
-    .click(function() {
+  $quesTarget = $('#question').find('div.vote').first();
+  $quesTarget.append($QuesIcons);
+  $ansTarget = $('#answers').find('div.post-editor').first();
+  $ansTarget.append($AnsIcons);
 
-      var action = $(this).attr('data-action');
-      // Update the watch button state ASAP. In case watch/un-watch fails,
-      // the same is handled when message is received from background script.
-      updateWatchIcon(action == 'watchPage');
-
-      sendMessageToBackground({ action: action, url: url }, function(){ } );
-   });
-
-  $target = $('#question').find('div.vote').first();
-  $target.append($watchIcon);
-  $ansTarget = $('#answers').find('div.answers-header').first();
-  $ansTarget.append($ansIcon);
-  // $(document.body).append($popup);
-
-  //$target = $('#answers').find('div.vote').second();
-  //$target.append($watchIcon);
-  $(document.body).append($notificationDiv);
-  //$(document.body).append($popup);
 }
 
-
-function updateWatchIcon(watchStatus) {
+function updateIcons(watchStatus) {
   var imageUrl,
     action;
-
-  if (!$watchIcon) {
-    createWatchIcon();
-  } else {
+  if (!$QuesIcons && !$AnsIcons) {
+    createIcons();
   }
 
   if (watchStatus) {
@@ -97,7 +114,8 @@ function updateWatchIcon(watchStatus) {
     action = 'watchPage';
   }
 
-  $watchIcon.attr({ src: imageUrl, 'data-action': action });
+  $QuesIcons.attr({ src: imageUrl, 'data-action': action });
+
 }
 
 // const IPFS = require('ipfs-mini');
@@ -150,7 +168,7 @@ function updateWatchIcon(watchStatus) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.messageType == 'watchStatus') {
-    updateWatchIcon(request.watchStatus);
+    updateIcons(request.watchStatus);
   } else if (request.messageType == 'notification') {
     showNotification({ type: request.type, message: request.message });
   }
