@@ -114,9 +114,9 @@ $(function() {
     return false;
   };
 
-  Popup.methods.briansfunction = function(evt) {
-    return false;
-  };
+  // Popup.methods.briansfunction = function(evt) {
+  //   return false;
+  // };
 
   Popup.methods.updateTabContent = function() {
     var $this = $(this),
@@ -137,6 +137,6 @@ $(function() {
   $('a.link').click(Popup.methods.openQuestionInTab);
   $(document).on('click', '.trash-icon', Popup.methods.removeNotification);
   Popup.vars.$viewNotificationsButton.click(Popup.methods.viewAllNotificationsInTab);
-  Popup.vars.$brainsButton.click(Popup.methods.briansfunction);
   $('.se-tab').click(Popup.methods.updateTabContent);
+  Popup.vars.$briansButton.click(Popup.methods.briansfunction);
 });
