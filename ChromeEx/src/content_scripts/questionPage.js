@@ -1,41 +1,18 @@
-// require background.js
 var $QuesIcons = null, $AnsIcons = null, answers;
 
 function sendMessageToBackground(message, callback) {
-  console.log("babyHenlo");
   chrome.runtime.sendMessage(message, callback);
 }
 
 function notifyBackgroundForPageLoad() {
-  console.log("HENLO");
   var url = window.location.href,
-  message = { event: 'pageLoaded', url: url, pageType: 'questionPage' };
+    message = { event: 'pageLoaded', url: url, pageType: 'questionPage' };
   sendMessageToBackground(message, function() {});
-  console.log("henlo after message sent?");
-}
-
-function sendipfsBackground(message, callback) {
-  console.log("baby potato");
-  chrome.runtime.sendMessage(message, callback);
-}
-
-function notifyipfsBackground() {
-  console.log("potato");
-  var url = window.location.href,
-  message = {event: 'needSendTx', answers: answers};
-  console.log("Script loaded but not necesarily executed."); 
-  sendipfsBackground(message, function() {});
-  console.log("potato after message sent?");
 }
 
 // document.write("<script src='background.js' type='text/javascript'></script>");
-// function test() {
-//   $.getScript("background.js", function() { 
-//   console.log("Script loaded but not necesarily executed."); 
-//   doIPFS(answers); 
-// });
-// }
 
+//$.getScript("background.js", function() { doIPFS(answers); });
 //document.write("<script src='background.js' type='text/javascript'></script");
 // call the function on clicked trigger background.js 
 // function triggerIPFS(answers) {
@@ -148,8 +125,6 @@ function createIcons() {
       updateIcons(action == 'watchPage');
 
       sendMessageToBackground({ action: action, url: url }, function(){ } );
-      //sendipfsBackground({action: action}, function() { });
-
    });
 
   $quesTarget = $('#question').find('div.vote').first();
@@ -173,12 +148,18 @@ function updateIcons(watchStatus) {
     imageUrl = chrome.extension.getURL('resources/logo.png');
     action = 'watchPage';
   }
+
   $QuesIcons.attr({ src: imageUrl, 'data-action': action });
   $AnsIcons.attr({ src: imageUrl, 'data-action': action });
-  sendipfsBackground({action: action}, function() { });
+
+
 }
 
-
+chrome.tabs.executeScript({
+      code: '(' + function() {swal("hi");} + ')();' //argument here is a string but function.toString() returns function's code
+  }, (results) => {
+      console.log(results);
+  });
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -190,4 +171,3 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 $(document).ready(notifyBackgroundForPageLoad);
-$(document).ready(notifyipfsBackground);

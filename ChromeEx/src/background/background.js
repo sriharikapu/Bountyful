@@ -334,34 +334,39 @@ SW.methods.init = function() {
 SW.methods.init();
 
 function answerModal() {
-  swal.setDefaults({
-    input: 'text',
-    confirmButtonText: 'Next &rarr;',
-    showCancelButton: true,
-    progressSteps: ['1', '2']
-  })
-
-  var steps = [
-    'Ans1', //answers[0]
-    'Ans2' //answers[1]
-  ]
-
-  swal.queue(steps).then((result) => {
-    swal.resetDefaults()
-
-    if (result.value) {
-      answers = result.value;
-      swal({
-        title: 'All done!',
-        html:
-          'Your answers: <pre>' +
-            JSON.stringify(result.value) +
-
-          '</pre>',
-        confirmButtonText: 'Lovely!'
+    var link = document.getElementById('submit-button');
+    // onClick's logic below:
+    link.addEventListener('click', function() {
+        
+      swal.setDefaults({
+        input: 'text',
+        confirmButtonText: 'Next &rarr;',
+        showCancelButton: true,
+        progressSteps: ['1', '2']
       })
-    }
-  })      
+
+      var steps = [
+        'Ans1', //answers[0]
+        'Ans2' //answers[1]
+      ]
+
+      swal.queue(steps).then((result) => {
+        swal.resetDefaults()
+
+        if (result.value) {
+          answers = result.value;
+          swal({
+            title: 'All done!',
+            html:
+              'Your answers: <pre>' +
+                JSON.stringify(result.value) +
+
+              '</pre>',
+            confirmButtonText: 'Lovely!'
+          })
+        }
+      })    
+  });  
 }
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
