@@ -7,8 +7,9 @@
 
   "background": {
     "scripts": [
+      "src/libs/web3.js",
       "src/libs/sweetalert2.all.min.js",
-      "src/libs/index.min.js",
+      "src/libs/ipfs-mini.js",
       "src/libs/jquery-1.9.1.js",
       "src/shared/globals.js",
       "src/shared/api_methods.js",
@@ -28,7 +29,7 @@
         "*://*.stackoverflow.com/questions/*",
         "*://*.superuser.com/questions/*"
       ],
-      "js": ["src/libs/jquery-1.9.1.js", "src/libs/sweetalert2.all.min.js", "src/libs/index.min.js", "src/content_scripts/questionPage.js"],
+      "js": ["src/libs/ipfs-mini.js", "src/libs/jquery-1.9.1.js", "src/libs/sweetalert2.all.min.js", "src/content_scripts/questionPage.js"],
       "css": ["src/content_scripts/cs.css"]
     },
     {
@@ -69,6 +70,7 @@
   ],
   
   "web_accessible_resources": [
+    "resources/logo.png",
     "resources/icons/eye-open/128.png",
     "resources/icons/eye-closed/128.png"
   ]
