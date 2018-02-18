@@ -24,13 +24,12 @@ function createWatchIcon() {
         input: 'text',
         confirmButtonText: 'Next &rarr;',
         showCancelButton: true,
-        progressSteps: ['1', '2', '3']
+        progressSteps: ['1', '2']
       })
 
       var steps = [
-        'Address', //answers[0]
-        'Bounty', //answers[1]
-        'Deadline' //answers[2]
+        'Bounty', //answers[0]
+        'Deadline' //answers[1]
       ]
 
       swal.queue(steps).then((result) => {
